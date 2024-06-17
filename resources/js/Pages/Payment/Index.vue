@@ -1,0 +1,32 @@
+<script setup>
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { Head } from '@inertiajs/vue3';
+import Pagination from "@/Components/Pagination.vue";
+import IndexTable from "@/Pages/Payment/Partials/IndexTable.vue";
+
+defineProps({
+    payments: Object
+});
+</script>
+
+<template>
+    <Head title="Profile" />
+
+    <AuthenticatedLayout>
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Payments</h2>
+        </template>
+
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <IndexTable :payments="payments" />
+                </div>
+
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <Pagination :links="payments.links" />
+                </div>
+            </div>
+        </div>
+    </AuthenticatedLayout>
+</template>
