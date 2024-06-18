@@ -10,6 +10,14 @@ class Payment extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'currency_id',
+        'props',
+        'value',
+        'status'
+    ];
+
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);

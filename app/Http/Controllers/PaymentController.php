@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\PaymentStatusEnum;
+use App\Http\Requests\PaymentUpdateRequest;
 use App\Models\Currency;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -35,7 +37,7 @@ class PaymentController extends Controller
             ->pluck('title', 'id')
             ->toArray();
 
-        $paymentStatuses = PaymentStatusEnum::asArray();
+        $paymentStatuses = PaymentStatusEnum::asSelectArray();
 
         return Inertia::render('Payment/Edit', [
                 'payment' => $payment,
@@ -46,19 +48,9 @@ class PaymentController extends Controller
         );
     }
 
-    public function update(Request $request, Payment $payment): \Illuminate\Http\RedirectResponse
+    public function update(PaymentUpdateRequest $request, Payment $payment): RedirectResponse
     {
-        $request->validate([
-            'value' => 'required'
-        ]);
-
-        /*
-         * TODO: Нормальная валидация будет при создании API метода
-         */
-
-        $payment->value = $request->value;
-        $payment->save();
-        sleep(1);
+        $payment->update($request->validated());
 
         return redirect()
             ->route('payments.index')
